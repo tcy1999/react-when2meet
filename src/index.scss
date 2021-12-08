@@ -1,0 +1,60 @@
+@import "~bootstrap/scss/bootstrap";
+@import url('http://fonts.googleapis.com/css?family=Quicksand');
+@import '~react-super-responsive-table/dist/SuperResponsiveTableStyle';
+
+:root {
+  --bs-font-sans-serif: 'Quicksand', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@media screen and (max-width: 40em){
+  .responsiveTable tbody tr {
+    border: 1px solid #ccc;
+  }
+}
+
+#Home {
+  margin: 3%;
+  width: 90%;
+  .linkcontainer {
+    margin-top: 5%;
+    .btn {
+      font-size: 2em;
+    }
+  }
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+$startColor: rgb(17, 103, 177);
+$endColor: rgb(208, 239, 255);
+
+#time-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  .mytable {
+    //box-shadow: #ccc 10px 2px 30px;
+
+    Td, Th {
+      border: 0.5em solid white;
+    }
+
+    .cell {
+      min-width: 3em;
+      min-height: 1.5em;
+      &.selected {
+        background-color: $startColor;
+      }
+      &.unselected {
+        background-color: rgb(220, 220, 220);
+      }
+      &:hover {
+        background-color: $endColor;
+      }
+    }
+  }
+}
