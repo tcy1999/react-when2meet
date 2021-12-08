@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
 import moment from 'moment-timezone';
-import HourCellDisplay from './HourCellDisplay';
-import HourCell from './HourCell';
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import TimeSelector from "./TimeSelector";
+import TimeDisplayer from "./TimeDisplayer";
 
 export type cellCount = {
   key: string;
@@ -57,31 +56,7 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
           {user ? 
           <div>
             <h2>{user}'s Availability</h2>
-            <div id='time-selector'>
-              <Table className='mytable'>
-                <Thead>
-                  <Tr>
-                    <Th scope="col"></Th>
-                    {cols.map(
-                      (i) => <Th scope="col">{i}</Th>)
-                    }
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {
-                    rows.map((row) =>                 
-                    <Tr>
-                      <Th scope="row">{row}</Th>
-                      {
-                      cols.map(
-                      (col) => <Td><HourCell row={row} col={col} user={user}
-                      callback={setCountMap}></HourCell></Td>)
-                      }
-                    </Tr>)
-                  }  
-                </Tbody>
-              </Table>
-            </div>
+            <TimeSelector user={user} rows={rows} cols={cols} callback={setCountMap}/>
           </div>
           :
           <div>
@@ -95,29 +70,7 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
         </div>
         <div className="col-md">
           <h2>Group's Availability</h2>
-          <div id='time-selector'>
-            <Table className='mytable'>
-              <Thead>
-                <Tr>
-                  <Th scope="col"></Th>
-                    {cols.map((i) => <Th scope="col">{i}</Th>)}
-                </Tr>
-              </Thead>
-              <Tbody>
-                {
-                  rows.map((row) =>                 
-                  <Tr>
-                    <Th scope="row">{row}</Th>
-                    {
-                      cols.map(
-                      (col) => <Td>{countMap[countMap.findIndex((elem)=>elem.key === `${col}-${row}`)].
-                      available.length}</Td>)
-                    }
-                  </Tr>)
-                }  
-              </Tbody>
-            </Table>
-          </div>
+          <TimeDisplayer rows={rows} cols={cols} countMap={countMap}/>
         </div>
       </div>
     </div>
