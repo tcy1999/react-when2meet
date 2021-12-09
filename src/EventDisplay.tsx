@@ -2,11 +2,11 @@ import { useState, useRef } from "react";
 import moment from 'moment-timezone';
 import TimeSelector from "./TimeSelector";
 import TimeDisplayer from "./TimeDisplayer";
+import update from 'immutability-helper';
 
 export type cellCount = {
-  key: string;
-  unavailable: Array<string>;
-  available: Array<string>;
+  unavailable: Set<string>;
+  available: Set<string>;
 };
 
 export type EventProps = {
@@ -34,43 +34,58 @@ const generateHours = (start:number, end:number) => {
 
 const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, numDays, timeZone, 
   startTime, endTime}) {
-  const [user, setUser] = useState('');
+  const [users, setUsers] = useState(new Set());
+  const [currentUser, setCurrentUser] = useState('');
   const inputEl = useRef(null);
 
   const cols = range(0, numDays, 1).map((i) => 
   moment(startDate).tz(timeZone).add(i, 'days').format('MMM DD'));
   const rows = generateHours(startTime, endTime);
-  let initMap = [];
+  let initMap = new Map();
   for (const row of rows) {
     for (const col of cols) {
-      initMap.push({key: `${col}-${row}`, unavailable: [], available: []})
+      initMap.set(`${col}-${row}`, {unavailable: users, available: new Set()});
     }
   }
-  const [countMap, setCountMap] = useState<Array<cellCount>>(initMap);
+  const [countMap, setCountMap] = useState<Map<string, cellCount>>(initMap);
 
   return (
     <div className="container">
       <h1>{eventName}</h1>
       <div className="row">
         <div className="col-md">
-          {user ? 
+          {currentUser ? 
           <div>
-            <h2>{user}'s Availability</h2>
-            <TimeSelector user={user} rows={rows} cols={cols} callback={setCountMap}/>
+            <h2>{currentUser}'s Availability
+              <button className="btn btn-outline-secondary marginleft" onClick={() => {
+                setCurrentUser('');
+              }}>Sign out</button>
+            </h2>
+            <TimeSelector user={currentUser} rows={rows} cols={cols} countMap={countMap} callback={setCountMap}/>
           </div>
           :
-          <div>
-            <div className="col-md"><label htmlFor="user">Your name:</label></div>
-            <div className="col-md"><input className="form-control" type="text" id="user" 
-                ref={inputEl}/></div>
-            <button className="col-md btn btn-outline-secondary" onClick={() => {
-              setUser((inputEl as any).current.value)}}>Sign in</button>
+          <div className="col-md">
+            <div className="row">
+              <label className="col-md-3" htmlFor="user">Your name:</label>
+              <div className="col-md-5">
+                <input className="form-control" type="text" id="user" 
+                  ref={inputEl}/>
+              </div>
+            </div>
+            <div className="row margintop">
+              <div className="offset-md-3 col-md-5">
+                <button className="btn btn-outline-secondary w-100" onClick={() => {
+                setCurrentUser((inputEl as any).current.value);
+                setUsers(update(users, {$add: [(inputEl as any).current.value]}));
+                }}>Sign in</button>
+              </div>
+            </div>
           </div>
           }
         </div>
         <div className="col-md">
           <h2>Group's Availability</h2>
-          <TimeDisplayer rows={rows} cols={cols} countMap={countMap}/>
+          <TimeDisplayer userNum={users.size} rows={rows} cols={cols} countMap={countMap}/>
         </div>
       </div>
     </div>

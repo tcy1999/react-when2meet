@@ -27,8 +27,15 @@ h1, h2 {
   text-align: center;
 }
 
-$startColor: rgb(17, 103, 177);
-$endColor: rgb(208, 239, 255);
+$endColor: rgb(17, 103, 177);
+
+.margintop {
+  margin-top: 3%;
+}
+
+.marginleft {
+  margin-left: 3%;
+}
 
 .time-selector {
   display: flex;
@@ -40,20 +47,20 @@ $endColor: rgb(208, 239, 255);
     //box-shadow: #ccc 10px 2px 30px;
 
     Td, Th {
-      border: 0.5em solid white;
+      border: 0.2em solid white;
     }
 
     .cell {
       min-width: 3em;
       min-height: 1.5em;
       &.selected {
-        background-color: $startColor;
+        background-color: $endColor;
       }
       &.unselected {
         background-color: rgb(220, 220, 220);
       }
       &:hover {
-        background-color: $endColor;
+        background-color: rgb(208, 239, 255);
       }
     }
   }

@@ -1,14 +1,15 @@
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
-import { cellCount } from './TimeSelector';
+import { cellCount } from './EventDisplay';
 import HourCellDisplay from './HourCellDisplay';
 
 type TimeDisplayerProps = {
-    rows: Array<string>,
-    cols: Array<string>,
-    countMap: Array<cellCount>
+  userNum: number,
+  rows: Array<string>,
+  cols: Array<string>,
+  countMap: Map<string, cellCount>
 }
 
-const TimeDisplayer: React.FC<TimeDisplayerProps> = function ({ rows, cols, countMap }) {
+const TimeDisplayer: React.FC<TimeDisplayerProps> = function ({ userNum, rows, cols, countMap }) {
   return (
     <div className='time-selector'>
       <Table className='mytable'>
@@ -25,8 +26,8 @@ const TimeDisplayer: React.FC<TimeDisplayerProps> = function ({ rows, cols, coun
               <Th scope="row">{row}</Th>
               {
                 cols.map(
-                (col) => <Td>{countMap[countMap.findIndex((elem)=>elem.key === `${col}-${row}`)].
-                available.length}</Td>)
+                (col) => <Td><HourCellDisplay userNum={userNum} 
+                count={countMap.get(`${col}-${row}`)!.available.size}/></Td>)
               }
             </Tr>)
           }  
