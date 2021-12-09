@@ -33,7 +33,7 @@ const HourCellDisplay: React.FC<HourCellDisplayProps> = function ({userNum, coun
     const [hover, setHover] = useState(false);
 
     return (
-      <div className="cell" style={{backgroundColor:getColor(count, userNum)}}>
+      <div className="cellDisplay" style={{backgroundColor:getColor(count, userNum)}}>
       </div>
     )
 }

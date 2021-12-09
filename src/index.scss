@@ -49,10 +49,13 @@ $endColor: rgb(17, 103, 177);
     Td, Th {
       border: 0.2em solid white;
     }
-
-    .cell {
+    
+    .cell, .cellDisplay {
       min-width: 3em;
       min-height: 1.5em;
+    }
+
+    .cell {
       &.selected {
         background-color: $endColor;
       }
