@@ -23,7 +23,7 @@ const DIFF_COLOR = {
   b: END_COLOR.b - START_COLOR.b,
 }
 
-const getColor = function(count: number, userNum:number) {
+export const getColor = function(count: number, userNum:number) {
   const percent = count / userNum;
   return `rgb(${Math.round(START_COLOR.r + percent*DIFF_COLOR.r)}, ${Math.round(START_COLOR.g + 
     percent*DIFF_COLOR.g)}, ${Math.round(START_COLOR.b + percent*DIFF_COLOR.b)})`;

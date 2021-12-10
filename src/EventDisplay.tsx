@@ -18,14 +18,14 @@ export type EventProps = {
   endTime: number
 }
 
-const range = (start:number, end:number, delta:number) => {
+export const range = (start:number, end:number, delta:number) => {
   return Array.from(
     {length: (end - start) / delta}, (v, k) => (k * delta) + start
   )
 };
 
 const generateHours = (start:number, end:number) => {
-  return Array.from({length: end-start}, (_, i) => i).reduce((result:string[], hour:number) => {
+  return Array.from({length: end-start}, (_, i) => i + start).reduce((result:string[], hour:number) => {
     result.push(moment({hour}).format('h:mm A'));
     result.push(moment({hour, minute: 30}).format('h:mm A'));
     return result;

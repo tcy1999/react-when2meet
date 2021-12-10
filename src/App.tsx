@@ -14,8 +14,8 @@ export const DEFAULT_INPUT = {
   timeZone: 'America/New_York',
   startDate: moment(new Date()).format('YYYY-MM-DD'),
   numDays: 7,
-  startTime: 0,
-  endTime: 24
+  startTime: 8,
+  endTime: 20
 }
 
 function App () {

@@ -37,34 +37,36 @@ $endColor: rgb(17, 103, 177);
   margin-left: 3%;
 }
 
+.marginright {
+  margin-right: 3%;
+}
+
 .time-selector {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 
-  .mytable {
-    //box-shadow: #ccc 10px 2px 30px;
-
-    Td, Th {
-      border: 0.2em solid white;
+  Td, Th {
+    padding: 0;
+    font-size: 0.8em;
+    border: 1px solid white;
+  }
+  
+  .cell, .cellDisplay {
+    min-width: 3em;
+    min-height: 0.8em;
+    &.selected {
+      background-color: $endColor;
     }
-    
-    .cell, .cellDisplay {
-      min-width: 3em;
-      min-height: 1.5em;
+    &.unselected {
+      background-color: rgb(220, 220, 220);
     }
+  }
 
-    .cell {
-      &.selected {
-        background-color: $endColor;
-      }
-      &.unselected {
-        background-color: rgb(220, 220, 220);
-      }
-      &:hover {
-        background-color: rgb(208, 239, 255);
-      }
+  .cell {
+    &:hover {
+      background-color: rgb(208, 239, 255);
     }
   }
 }
