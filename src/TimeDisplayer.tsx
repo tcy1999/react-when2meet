@@ -18,8 +18,7 @@ const TimeDisplayer: React.FC<TimeDisplayerProps> = function ({ startDate, timeZ
   countMap, callback }) {
   const userNum = users!.size;
   return (
-    <div className='time-selector' onMouseEnter={() => {
-      callback(false)}}  onMouseLeave={() => {callback(true)}}>
+    <div className='time-selector'>
       {userNum > 0 && <div className='d-inline-flex w-100 justify-content-center'>
         {`0/${userNum} Available`}
           <div className="w-100 d-inline-flex marginleft marginright" style={{border: "1px solid #ccc", 
@@ -32,7 +31,7 @@ const TimeDisplayer: React.FC<TimeDisplayerProps> = function ({ startDate, timeZ
           </div>
        {`${userNum}/${userNum} Available`}
       </div>}
-      <div className="row">Mouse hover the calendar to see who is available</div>
+      <div className="row">Mouseover the calendar to see who is available</div>
       <Table className='mytable'>
         <Thead>
           <Tr>
@@ -47,7 +46,9 @@ const TimeDisplayer: React.FC<TimeDisplayerProps> = function ({ startDate, timeZ
               <Th scope="row">{row.split(':')[1].includes("00") && row}</Th>
               {
                 cols.map(
-                (col, i) => <Td><HourCellDisplay date={moment(`${startDate} ${row}`, 
+                (col, i) => <Td onMouseEnter={() => {
+                  callback(false)}}  onMouseLeave={() => {callback(true)}}>
+                <HourCellDisplay date={moment(`${startDate} ${row}`, 
                 "YYYY-MM-DD h:mm A").add(i, "days").tz(timeZone).format('llll z')} users={users} 
                 available={countMap.get(`${col}-${row}`)} /></Td>)
               }
