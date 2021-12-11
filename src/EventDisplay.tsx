@@ -4,11 +4,6 @@ import TimeSelector from "./TimeSelector";
 import TimeDisplayer from "./TimeDisplayer";
 import update from 'immutability-helper';
 
-export type cellCount = {
-  unavailable: Set<string>;
-  available: Set<string>;
-};
-
 export type EventProps = {
   eventName: string,
   timeZone: string,
@@ -34,7 +29,7 @@ const generateHours = (start:number, end:number) => {
 
 const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, numDays, timeZone, 
   startTime, endTime}) {
-  const [users, setUsers] = useState(new Set());
+  const [users, setUsers] = useState(new Set<string>());
   const [currentUser, setCurrentUser] = useState('');
   const inputEl = useRef(null);
 
@@ -44,10 +39,11 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
   let initMap = new Map();
   for (const row of rows) {
     for (const col of cols) {
-      initMap.set(`${col}-${row}`, {unavailable: users, available: new Set()});
+      initMap.set(`${col}-${row}`, new Set<string>());
     }
   }
-  const [countMap, setCountMap] = useState<Map<string, cellCount>>(initMap);
+  const [countMap, setCountMap] = useState<Map<string, Set<string>>>(initMap);
+  const [visible, setVisible]= useState<boolean>(true);
 
   return (
     <div className="container">
@@ -56,12 +52,17 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
         <div className="col-md">
           {currentUser ? 
           <div>
-            <h2>{currentUser}'s Availability
-              <button className="btn btn-outline-secondary marginleft" onClick={() => {
-                setCurrentUser('');
-              }}>Sign out</button>
-            </h2>
-            <TimeSelector user={currentUser} rows={rows} cols={cols} countMap={countMap} callback={setCountMap}/>
+            <div id='available' className={visible?'notdisplay':'display'}>
+              <div id="placeholder"></div>
+            </div>
+            <div id="timeselector" className={visible?'display':'notdisplay'}>
+              <h2>{currentUser}'s Availability
+                <button className="btn btn-outline-secondary marginleft" onClick={() => {
+                  setCurrentUser('');
+                }}>Sign out</button>
+              </h2>
+              <TimeSelector user={currentUser} rows={rows} cols={cols} countMap={countMap} callback={setCountMap}/>
+            </div>
           </div>
           :
           <div className="col-md">
@@ -85,7 +86,8 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
         </div>
         <div className="col-md">
           <h2>Group's Availability</h2>
-          <TimeDisplayer userNum={users.size} rows={rows} cols={cols} countMap={countMap}/>
+          <TimeDisplayer startDate={startDate} timeZone={timeZone} users={users} rows={rows} cols={cols} 
+          countMap={countMap} callback={setVisible}/>
         </div>
       </div>
     </div>

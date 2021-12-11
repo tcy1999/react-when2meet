@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { render } from 'react-dom';
 
 type HourCellDisplayProps =  {
-  userNum: number;
-  count: number;
+  date: string;
+  users: Set<string> | undefined;
+  available: Set<string> | undefined;
 }
 
 const START_COLOR ={
@@ -29,13 +30,26 @@ export const getColor = function(count: number, userNum:number) {
     percent*DIFF_COLOR.g)}, ${Math.round(START_COLOR.b + percent*DIFF_COLOR.b)})`;
 }
 
-const HourCellDisplay: React.FC<HourCellDisplayProps> = function ({userNum, count}){
-    const [hover, setHover] = useState(false);
-
-    return (
-      <div className="cellDisplay" style={{backgroundColor:getColor(count, userNum)}}>
-      </div>
-    )
+const HourCellDisplay: React.FC<HourCellDisplayProps> = function ({users, date, available}){
+  return (
+    <div className="cellDisplay" style={{backgroundColor:getColor(available!.size, users!.size)}}
+    onMouseEnter={() => {
+      if(document.getElementById('placeholder'))
+        render(<><h2>{date}</h2>
+        <div className='row justify-content-center'>
+          <div className='col-md-4'>
+            Available
+            {Array.from(available!.values()).map(i => <div>{i}</div>)}
+          </div>
+          <div className='col-md-4'>
+            Unavailable
+            {Array.from(users!.values()).filter(x => !available!.has(x)).map(i => <div>{i}</div>)}
+          </div>
+        </div>
+        </>, document.getElementById('placeholder'));
+    }}>
+    </div>
+  )
 }
 
 export default HourCellDisplay;
