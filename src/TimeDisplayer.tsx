@@ -7,7 +7,7 @@ import HourCellDisplay, { getColor } from './HourCellDisplay';
 type TimeDisplayerProps = {
   startDate: string,
   timeZone: string,
-  users?: Set<string>,
+  users: Set<string>,
   rows: Array<string>,
   cols: Array<string>,
   countMap: Map<string, Set<string>>

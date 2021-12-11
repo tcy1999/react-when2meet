@@ -7,10 +7,11 @@ import { DEFAULT_INPUT } from "./App";
 import { EventProps } from "./EventDisplay";
 
 type AppRouterProps =  {
-  callback: (params:EventProps) => void;
+  groupId: string,
+  callback: (params:EventProps) => void,
 }
 
-const Home:React.FC<AppRouterProps> = function({callback}) {
+const Home:React.FC<AppRouterProps> = function({groupId, callback}) {
   const [eventName, setEventName] = useState(DEFAULT_INPUT.eventName);
   const [timeZone, setTimeZone] = useState(DEFAULT_INPUT.timeZone);
   const [startDate, setStartDate] = useState(DEFAULT_INPUT.startDate);
@@ -67,8 +68,8 @@ const Home:React.FC<AppRouterProps> = function({callback}) {
             setEndTime(parseInt(ev.target.value))}></input>
           </div>  
           <div className="d-grid linkcontainer">
-            <Link to="/event" className="btn btn-primary btn-block" onClick={() => handleClick(eventName, timeZone, 
-              startDate, numDays, startTime, endTime)}>Create event</Link>
+            <Link to={`/event/${groupId}`} className="btn btn-primary btn-block" onClick={() => 
+            handleClick(eventName, timeZone, startDate, numDays, startTime, endTime)}>Create event</Link>
           </div>
         </form>
         </div>

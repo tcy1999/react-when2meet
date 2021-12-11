@@ -7,11 +7,11 @@ type TimeSelectorProps = {
   rows: Array<string>,
   cols: Array<string>,
   countMap: Map<string, Set<string>>,
-  callback: Dispatch<SetStateAction<Map<string, Set<string>>>>;
+  callback: Dispatch<SetStateAction<Map<string, Set<string>>>>,
 }
 
-// TODO: hover在行列名的控制, 记住选择的格子(localStorage?firebase?),
-// 给每个event单开界面(uuid?firebase的id?), 拖拽, 不同时区, 检查输入, ui (如重写responsible table), 
+// TODO: 改结构, listener,
+// 拖拽, 不同时区, 检查输入, ui (如重写responsible table), 代码优化(performance, 结构)
 // key, memo, accessibility, 选日子选项(weekday), more functions like sharing/priting
 
 const TimeSelector: React.FC<TimeSelectorProps> = function ({ user, rows, cols, countMap, callback }) {

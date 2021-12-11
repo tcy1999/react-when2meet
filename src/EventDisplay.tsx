@@ -1,8 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import moment from 'moment-timezone';
 import TimeSelector from "./TimeSelector";
 import TimeDisplayer from "./TimeDisplayer";
 import update from 'immutability-helper';
+import { getDataModel, resetDataModel } from "./DataModel";
+import { useParams } from "react-router";
 
 export type EventProps = {
   eventName: string,
@@ -32,11 +34,13 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
   const [users, setUsers] = useState(new Set<string>());
   const [currentUser, setCurrentUser] = useState('');
   const inputEl = useRef(null);
+  let { groupId } = useParams();
+  const dataModel = getDataModel(groupId!);
 
   const cols = range(0, numDays, 1).map((i) => 
   moment(startDate).tz(timeZone).add(i, 'days').format('MMM DD'));
   const rows = generateHours(startTime, endTime);
-  let initMap = new Map();
+  let initMap = new Map<string, Set<string>>();
   for (const row of rows) {
     for (const col of cols) {
       initMap.set(`${col}-${row}`, new Set<string>());
@@ -44,6 +48,26 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
   }
   const [countMap, setCountMap] = useState<Map<string, Set<string>>>(initMap);
   const [visible, setVisible]= useState<boolean>(true);
+
+  useEffect(() => {
+    const fun = async function () {
+      const mapDB = await dataModel.fetchData(rows, cols);
+      const userDB = await dataModel.fetchUsers();
+
+      if (mapDB) {
+        setCountMap(mapDB);
+      }
+
+      if (userDB) {
+        setUsers(userDB);
+      }
+    }
+    fun();
+
+    return () => {
+      resetDataModel();
+    }
+  }, []);
 
   return (
     <div className="container">
@@ -61,7 +85,8 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
                   setCurrentUser('');
                 }}>Sign out</button>
               </h2>
-              <TimeSelector user={currentUser} rows={rows} cols={cols} countMap={countMap} callback={setCountMap}/>
+              <TimeSelector user={currentUser} rows={rows} cols={cols} 
+              countMap={countMap} callback={setCountMap}/>
             </div>
           </div>
           :
@@ -78,6 +103,7 @@ const EventDisplay: React.FC<EventProps> = function ({ eventName, startDate, num
                 <button className="btn btn-outline-secondary w-100" onClick={() => {
                 setCurrentUser((inputEl as any).current.value);
                 setUsers(update(users, {$add: [(inputEl as any).current.value]}));
+                dataModel.updateUsers(update(users, {$add: [(inputEl as any).current.value]}));
                 }}>Sign in</button>
               </div>
             </div>
