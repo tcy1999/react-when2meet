@@ -27,9 +27,9 @@ function App () {
   return (
     <Router>
         <Routes>
-          <Route path="/" element={<Home groupId={groupId} 
+          <Route path="/react-when2meet" element={<Home groupId={groupId} 
           callback={(params:EventProps) => setEventParams(params)}/>}/>
-          <Route path="/event/:groupId" element={<EventDisplay eventName={eventName} 
+          <Route path="/react-when2meet/event/:groupId" element={<EventDisplay eventName={eventName} 
           timeZone={timeZone} startDate={startDate} numDays={numDays} startTime={startTime} endTime={endTime}/>}/>
         </Routes>
       </Router>
