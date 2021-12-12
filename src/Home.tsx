@@ -38,7 +38,7 @@ const Home:React.FC<AppRouterProps> = function({groupId, callback}) {
             <select className="form-control" id="timezone" value={timeZone}
             onChange={(ev) => setTimeZone(ev.target.value)}>
               {moment.tz.names().map((item) => 
-                <option value={item}>{item}</option>)
+                <option key={item} value={item}>{item}</option>)
               }
             </select>
           </div>
