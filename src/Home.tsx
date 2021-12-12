@@ -68,7 +68,7 @@ const Home:React.FC<AppRouterProps> = function({groupId, callback}) {
             setEndTime(parseInt(ev.target.value))}></input>
           </div>  
           <div className="d-grid linkcontainer">
-            <Link to={`/react-when2meet/event/${groupId}`} className="btn btn-primary btn-block" onClick={() => 
+            <Link to={`/event/${groupId}`} className="btn btn-primary btn-block" onClick={() => 
             handleClick(eventName, timeZone, startDate, numDays, startTime, endTime)}>Create event</Link>
           </div>
         </form>

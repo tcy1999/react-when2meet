@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter,
   Routes,
   Route
 } from "react-router-dom";
@@ -25,14 +25,14 @@ function App () {
   let { eventName, timeZone, startDate, numDays, startTime, endTime } = eventParams;
 
   return (
-    <Router>
-        <Routes>
-          <Route path="/react-when2meet" element={<Home groupId={groupId} 
-          callback={(params:EventProps) => setEventParams(params)}/>}/>
-          <Route path="/react-when2meet/event/:groupId" element={<EventDisplay eventName={eventName} 
-          timeZone={timeZone} startDate={startDate} numDays={numDays} startTime={startTime} endTime={endTime}/>}/>
-        </Routes>
-      </Router>
+    <HashRouter basename="/">
+      <Routes>
+        <Route path="/" element={<Home groupId={groupId} 
+        callback={(params:EventProps) => setEventParams(params)}/>}/>
+        <Route path="/event/:groupId" element={<EventDisplay eventName={eventName} 
+        timeZone={timeZone} startDate={startDate} numDays={numDays} startTime={startTime} endTime={endTime}/>}/>
+      </Routes>
+    </HashRouter>
   );
 }
 
